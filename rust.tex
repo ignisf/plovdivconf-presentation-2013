@@ -1,0 +1,646 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  This Beamer template was created by Cameron Bracken.
+%%  Anyone can freely use or modify it for any purpose
+%%  without attribution.
+%%
+%%  Last Modified: January 9, 2009
+%%
+
+\documentclass[xcolor=x11names,compress]{beamer}
+
+%% General document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{decorations.fractals}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[bulgarian]{babel}
+\usepackage{hyperref}
+\usepackage{marvosym}
+\hypersetup{pdfstartview={Fit}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\useoutertheme[subsection=false,shadow]{miniframes}
+\useinnertheme{default}
+
+%\usefonttheme{serif}
+%\usepackage{palatino}
+%\usepackage{courier}
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{DeepSkyBlue4}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+%\setbeamerfont{title like}{shape=\scshape}
+%\setbeamerfont{frametitle}{shape=\scshape}
+
+\setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4}
+\setbeamercolor*{normal text}{fg=black,bg=white} 
+\setbeamercolor*{alerted text}{fg=red} 
+\setbeamercolor*{example text}{fg=black} 
+\setbeamercolor*{structure}{fg=black} 
+ 
+\setbeamercolor*{palette tertiary}{fg=black,bg=black!10} 
+\setbeamercolor*{palette quaternary}{fg=black,bg=black!10} 
+
+
+\setbeamercolor{block body alerted}{bg=DeepSkyBlue4 text.bg!90!black}
+\setbeamercolor{block body}{bg=normal text.bg!90!black}
+\setbeamercolor{block body example}{bg=normal text.bg!90!black}
+\setbeamercolor{block title alerted}{use={normal text,alerted text},fg=alerted text.fg!75!normal text.fg,bg=normal text.bg!75!black}
+\setbeamercolor{block title}{bg=DeepSkyBlue4,fg=white}
+\setbeamercolor{block title example}{use={normal text,example text},fg=example text.fg!75!normal text.fg,bg=normal text.bg!1!DeepSkyBlue4}
+
+\renewcommand{\(}{\begin{columns}}
+\renewcommand{\)}{\end{columns}}
+\newcommand{\<}[1]{\begin{column}{#1}}
+\renewcommand{\>}{\end{column}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Въведение}
+\begin{frame}
+\title{\textbf{Rust}}
+\subtitle{за практичния програмист}
+\author{Петко Борджуков}
+\date{
+  \includegraphics[scale=0.6]{Rust}  
+  \\
+  \vspace{1cm}
+  {\it PlovdivConf} \\
+  \tiny\today
+}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{За лектора}
+  \begin{center}
+    \setlength\fboxsep{2pt}
+    \setlength\fboxrule{0.3pt}
+    \fbox{\includegraphics[scale=0.3]{mugshot}} \\
+    Петко
+
+    \pause
+    занимава се с Ruby и Rails \pause \Heart
+
+    \vspace{1cm}
+    \pause
+    @ignisf
+
+    \pause
+    http://gplus.to/ignisf
+
+    \pause
+    https://github.com/ignisf
+  \end{center}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{За Rust}
+  \frametitle{Кратката история на Rust}
+  \pause
+  \begin{itemize}[<+->]
+  \item Започнат през 2006 г. като личен проект на Грейдън Хауър, служител на Mozilla
+  \item Mozilla се включва през 2009 г.
+  \item Първа алфа на компилатора през януари 2012 г.
+  \item Версия 0.7 -- преди няколко дни
+  \item Стабилна версия -- до края на годината
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Rust?}
+\subsection{Концепция}
+
+\begin{frame}{Парадигми}
+  \pause
+  \begin{itemize}[<+->]
+  \item Компилируем
+  \item Функционален (горе-долу)
+  \item Конкурентен (по модела на актьорите)
+  \item Императивно-процедурен
+  \item Обектно ориентиран
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Фокус върху}
+  \pause
+  \begin{itemize}[<+->]
+  \item Type safety
+  \item Memory safety
+  \item Concurrency
+  \item Performance
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Практична функционалност от по-високо ниво}
+  \pause
+  \begin{itemize}[<+->]
+  \item Type inferrence
+  \item Safe task-based concurrency
+  \item Функции от по-висок ред
+  \item Полиморфизъм
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Защо да се интересуваме от Rust?}
+  Какво е кофти в Ruby?
+
+  \pause
+  \begin{itemize}[<+->]
+  \item Конкурентността
+  \item Конкурентността!!1
+  \item Гаранциите за сигурност
+  \item Много променливи състояния
+  \item Бавен е
+  \item Сложен е (семантиката на Smalltalk се събира на листче)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Защо да се интересуваме от Rust?}
+  Какво е яко в Ruby?
+
+  \pause
+  \begin{itemize}[<+->]
+  \item Блоковете
+  \item Тове, че е функционален
+  \item Синтаксисът е горе-долу лесен
+  \item Прави разработчиците \emph{щастливи}.
+  \item Програмира се бързо с него
+  \item Динамично типизиран е
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hello world}
+\begin{frame}[fragile]
+  \frametitle{Популярният пример}
+
+  \pause
+  \begin{block}{Hello World}
+    \begin{lstlisting}
+      fn main() {
+          println("hello?");
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \pause \vspace{1cm}
+  Прилича ли ви на нещо познато?
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+  \frametitle{Още познати неща}
+
+  \pause
+  \begin{block}{Parallel Hello World}
+    \begin{lstlisting}[basicstyle=\tiny]
+fn main() {
+    for 10.times {
+        do spawn {
+          let greeting_message = "Hello?";
+          println(greeting_message);
+        }
+    }
+}
+    \end{lstlisting}
+  \end{block}
+
+  \pause
+  \begin{block}{Познато?}
+    \begin{lstlisting}[language=Ruby,basicstyle=\tiny]
+10.times do
+  Thread.new do
+    greeting_message = "Hello?"
+    puts greeting_message
+  end
+end
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Приличия между Ruby и Rust}
+  \begin{itemize}[<+->]
+  \item Променливите са в \texttt{snake\_case}
+  \item Имаме блокове, които използват \texttt{\{\}}
+  \item Въпреки че промеливите са статични типизирани, имаме type inferrence, така че няма нужда да декларираме типове
+  \item Ще видим още прилики по-нататък
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Различия между Ruby и Rust}
+  \begin{itemize}[<+->]
+  \item \texttt{;} (почти) навсякъде
+  \item Нямаме блокове, които използват \texttt{do} и \texttt{end}
+  \item Малко по-различен синтаксис за дефиниране на функция: \texttt{fn} вместо \texttt{def}
+  \item Понеже нямаме \texttt{do} и \texttt{end}, използваме \texttt{\{\}} навсякъде
+  \item Компилаторът ни се кара повече, ако сгрешим
+  \item При писане на Rust трябва да се следва PEP8 Style Guide
+  \item ВСИЧКО е immutable по подразбиране. \pause Да, дори променливите
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape TDD}
+\subsection{Вграден framework}
+\begin{frame}[fragile]
+  \frametitle{Фреймуърк за тестване}
+  В Rust има вграден прост фреймуърк за писане на unit тестове.
+
+  \pause
+  Не е RSpec, но хайде да не бъдем претенциозни...
+
+  \pause
+  \begin{block}{testing.rs}
+    \begin{lstlisting}
+#[test]
+fn this_tests_code() {
+    println("")
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  След това компилираме тестовете и ги пускаме с командата
+    \begin{lstlisting}
+      $ rustc --test testing.rs
+      $ ./testing
+    \end{lstlisting}
+
+  \pause\vspace{1cm}
+  На екрана ще се изведе нещо такова:
+  \begin{lstlisting}
+      $ ./testing
+
+      running 1 test
+
+      test this_tests_code ... ok
+
+      result: ok. 1 passed; 0 failed; 0 ignored
+      $
+  \end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Памет}
+\subsection{Управление на паметта в Rust}
+\begin{frame}{Управление на паметта}
+  \begin{itemize}[<+->]
+  \item Спорно най-голямото преимущество на Rust
+  \item Както и най-сложното за овладяване
+  \item Rust e garbage collected
+  \item \emph{Aко искаме да е}
+  \end{itemize}
+\end{frame}
+
+\subsection{Инструменти}
+\begin{frame}{Инструменти за управление на паметта}
+  \begin{itemize}[<+->]
+  \item Три вида указатели
+  \item Управлявани кутии (Managed boxes): \texttt{let x = @10;}
+  \item Собствени кутии (Owned boxes): \texttt{let x =} $\sim$ \texttt{10;}
+  \item Указатели на заем (Borrowed pointers): Означават се с \texttt{\&}
+  \item Небезопасни блокове и функции
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape ООП}
+\subsection{Структури}
+\begin{frame}[fragile]
+  \frametitle{Структури}
+
+  \pause
+  Структурите се използват за "`пакетиране"' на стойности:
+
+  \pause
+  \begin{block}{Структура}
+    \begin{lstlisting}
+struct Monster {
+    health: int,
+    attack: int
+}
+
+fn main() {
+  let m = Monster { health: 10, attack: 20 };
+
+  println(int::to_str(m.health));
+  println(int::to_str(m.attack));
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  Когато компилираме и изпълним предния код, на екранът ще се изведе:
+
+  \begin{lstlisting}
+$ rust run dwemthysarray.rs
+10
+20
+$
+  \end{lstlisting}
+
+  \pause
+  Ако пък подадем структурата на \texttt{fmt!}, използвайки формата \texttt{\%?}:
+
+  \pause
+  \begin{lstlisting}
+$ rust run dwemthysarray.rs
+{health: 10, attack: 20}
+$
+  \end{lstlisting}
+
+  \pause
+  Яко!
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Методи}
+\begin{frame}[fragile]
+  \frametitle{Методи}
+  Методите, са функции, които приемат първи аргумент с име \texttt{self}. \pause Python anyone?
+
+  \pause
+  \begin{block}{Имплементация на метод}
+    \begin{lstlisting}[basicstyle=\tiny]
+struct Monster {
+    health: int,
+    attack: int
+}
+
+impl Monster {
+    fn attack(&self) {
+        println(fmt!("The monster attacks for %d damage.", self.attack));
+    }
+}
+
+fn main() {
+    let m = Monster { health: 10, attack: 20 };
+
+    m.attack();
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Методи}
+
+  Това ще ни върне
+
+  \begin{lstlisting}
+    $ rust run dwemthysarray.rs
+    The monster attacks for 20 damage.
+    $
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Асоциирани функции}
+
+  \pause
+  \begin{itemize}[<+->]
+  \item Аналог на класовите методи в Ruby и статичните методи в Ява.
+  \item Дефинираме ги като метод, само че без \texttt{self} за първи аргумент.
+  \end{itemize}
+
+  \pause
+  \begin{block}{Асоциирана функция}
+    \begin{lstlisting}
+impl Monster {
+    fn count() {
+        println("There are lots of monsters.");
+    }
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Асоциирани функции}
+
+  \pause
+  Асоциираните функции намират приложение при имплементирането на конструктор в Rust.
+
+  \pause \vspace{0.5cm}
+  \begin{block}{Конструктор}
+    \begin{lstlisting}[basicstyle=\tiny]
+struct Monster {
+    health: int,
+    attack: int
+}
+
+impl Monster {
+    fn attack(&self) {
+        println(fmt!("The monster attacks for %d damage.", self.attack));
+    }
+
+    fn new(health: int, attack: int) -> Monster {
+        Monster { health:health, attack:attack }
+    }
+}
+
+fn main() {
+    Monster::new(20, 40).attack();
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Типажи и обобщения (Traits \& Generics)}
+\begin{frame}{Типажи и обобщения (Traits \& Generics)}
+  \begin{itemize}
+  \item Нещо средно между миксин и интерфейс. \pause Абстрактен клас? \pause
+  \item Чрез тях се постига полиморфизъм в Rust
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Лирическо отклонение}
+  Аналогът на списъците в Ruby в Rust са векторите.
+
+  \begin{itemize}[<+->]
+  \item Не са хетерогенни като в Ruby
+  \item Immutable по подразбиране като всичко останало
+  \item Дефинирани са им алгебрични оператори като в Ruby
+  \end{itemize}
+
+  \pause
+  \begin{block}{Вектори}
+    \begin{lstlisting}[basicstyle=\small]
+fn main() {
+    let your_numbers = @[1,2,3];
+    let my_numbers = @[4,5,6];
+    let our_numbers = your_numbers + my_numbers;
+
+    println(fmt!("The third number is %d.",
+                 our_numbers[2]))
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Trait}
+    \begin{lstlisting}
+fn print_vec<T: ToStr>(v: &[T]) {
+    for v.each |&i| {
+        println(i.to_str())
+    }
+}
+
+fn main() {
+    let vec = [1,2,3];
+    print_vec(vec);
+
+    let str_vec = [~"hey", ~"there", ~"yo"];
+    print_vec(str_vec);
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Operator Overloading}
+
+\begin{frame}{Operator Overloading}
+  Едно време ми се наложи да рисувам ето тази красота:
+  
+  \pause
+  \begin{center}
+    \includegraphics[scale=0.2]{apollonian}
+  \end{center}
+
+  \pause
+  Нарича се "`Аполониева гарнитура"' и е фрактал.
+\end{frame}
+
+\begin{frame}
+  Сега няма да се плашите.
+
+  \pause
+  \begin{itemize}[<+->]
+  \item Центровете и радиусите на окръжностите се изчисляват с теоремата на Декарт.
+  \item Нека центъра на окръжност $z_j$ е комплексно число (т.е. $z_j = x_j + i\mkern1mu y_j$).
+  \item Нека \emph{кривата} $k_j$ е реципрочното число на дължината на радиуса на окръжността.
+  \end{itemize}
+
+  \pause
+  Тогава центъра на допираща се до четири други окръжности окръжност намираме така:
+  \begin{block}{Следствие от комплексната декартова теорема}
+    \[
+    z_4 = \frac{2 (z_m k_m + z_2 k_2 + z_3 k_3) - z_1 k_1}{k_4}
+    \]
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    Фракталите с окръжности са ГАДНИ.
+
+    \pause
+    Сериозно.
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  Бях млад и глупав и реших да имплементирам предната формула на Java.
+
+  \pause
+  Сега вече не съм толкова млад.
+
+  \pause
+  Ето какво се получи:
+
+  \pause
+  \begin{block}{Java}
+    \begin{lstlisting}[language=Java,basicstyle=\tiny]
+public static Complex getDaughterCenter(SoddyCircle m, SoddyCircle a1,
+        SoddyCircle a2, SoddyCircle a3, double k){
+   
+    Complex z =  m.z().multiply(m.k)
+            .add(a2.z().multiply(a2.k))
+            .add(a3.z().multiply(a3.k))
+            .multiply(2)
+            .subtract(a1.z().multiply(a1.k))
+            .divide(new Complex(k, 0));
+   
+    return z;
+}
+    \end{lstlisting}
+  \end{block}
+
+  \pause
+  Приоритетът на операциите е пълна боза.
+
+  \pause
+  Освен това... \texttt{.add()}, \texttt{.multipy()}, \texttt{.divide()}...
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[scale=0.9]{notime}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  Ето как може да стане на Rust:
+
+  \pause
+  \begin{block}{Rust}
+    \begin{lstlisting}[basicstyle=\tiny]
+fn get_daughter_center(m: Circle, a1: Circle, a2: Circle,
+                       a3: Circle, k: float) -> Cmplx<float> {
+
+    let (p, q) = (~Cmplx::new(2.0, 0.0), ~Cmplx::new(k, 0.0));
+    ((m.z * m.k + a2.z * a2.k + a3.z * a3.k) * *p - a1.z * a1.k) / *q
+}
+    \end{lstlisting}
+  \end{block}
+
+  \pause
+  Пак е рунтаво, но е далеч по-четимо и по-лесно за дебъг от предишното.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Заключение}
+\begin{frame}
+  \begin{center}
+    \Huge Заключение
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \huge БЛАГОДАРЯ!\vspace{1cm}
+
+    \includegraphics{Crocodile}
+  \end{center}
+\end{frame}
+
+\end{document}
